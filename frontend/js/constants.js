@@ -4,7 +4,7 @@
 // tidak tersebar di banyak modul (memudahkan pemeliharaan).
 // ============================================================================
 
-export const API_BASE_URL = (typeof window !== 'undefined' && window.SITAS_API_BASE_URL) || 'http://localhost:4000/api';
+export const API_BASE_URL = (typeof window !== 'undefined' && window.SITAS_API_BASE_URL) || const API_URL = "https://sitasnaufal-production.up.railway.app";
 
 export const STORAGE_KEYS = {
   // Hanya dipakai sebagai CACHE OFFLINE sementara, BUKAN sumber kebenaran data.
