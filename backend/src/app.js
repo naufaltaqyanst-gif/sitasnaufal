@@ -1,3 +1,4 @@
+const path = require('path');
 const express = require('express');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -12,7 +13,11 @@ const { errorHandler, notFoundHandler } = require('./middleware/errorHandler');
 function createApp() {
   const app = express();
 
-  app.use(helmet());
+  app.use(
+    helmet({
+      contentSecurityPolicy: false,
+    })
+  );
   app.use(
     cors({
       origin: true,
@@ -38,6 +43,17 @@ function createApp() {
   app.use('/api/athletes', athletesRoutes);
   app.use('/api/users', usersRoutes);
   app.use('/api/tournaments', tournamentsRoutes);
+
+  // Serve Frontend
+  const frontendPath = path.join(__dirname, '../../frontend');
+  app.use(express.static(frontendPath));
+
+  app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    res.sendFile(path.join(frontendPath, 'index.html'));
+  });
 
   app.use(notFoundHandler);
   app.use(errorHandler);
